@@ -1,6 +1,6 @@
 <?php
 
-namespace AuthOrm;
+namespace Auth;
 
 class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 {

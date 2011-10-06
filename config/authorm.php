@@ -22,12 +22,9 @@ return array
 		
 		'group'	=> array
 		(
-			'id'		=> 'id'
+			'id'		=> 'id',
+			'users'		=> 'users',
+			'name'		=> 'name'
 		)
-	),
-	
-	'hashing_algorithm' => function($input)
-	{
-		return md5($input);
-	}
+	)
 );

@@ -4,6 +4,11 @@ namespace Auth;
 
 class Auth_Login_AuthOrm extends \Auth_Login_Driver
 {
+	protected $config = array
+	(
+		'drivers' => array('group' => array('AuthOrm')),
+	);
+
 	public static function _init()
 	{
 		\Config::load('authorm', true);
@@ -52,7 +57,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 		// start search		
 		foreach($userFieldUser as $userfield)
 		{
-			$userObj = $userModel::find()->where($userfield, $user)->where($userFieldPass, $hashingAlgorithm($pass))->get_one();
+			$userObj = $userModel::find()->where($userfield, $user)->where($userFieldPass, $this->hash_password($pass))->get_one();
 						
 			if($userObj) break;
 		}
