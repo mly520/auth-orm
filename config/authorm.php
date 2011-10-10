@@ -4,8 +4,9 @@ return array
 (
 	'model' => array
 	(
-		'user'	=> 'Model_User',
-		'group'	=> 'Model_Group'
+		'user'			=> 'Model_User',
+		'group'			=> 'Model_Group',
+		'permission'	=> 'Model_Permission'
 	),
 	
 	'fields' => array
@@ -25,6 +26,12 @@ return array
 			'id'		=> 'id',
 			'users'		=> 'users',
 			'name'		=> 'name'
+		),
+		
+		'permission' => array
+		(
+			'area'		=> 'area',
+			'right'		=> 'right',
 		)
 	)
 );
