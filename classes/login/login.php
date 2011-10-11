@@ -4,6 +4,8 @@ namespace Auth;
 
 class Auth_Login_AuthOrm extends \Auth_Login_Driver
 {
+	protected $user = null;
+	
 	protected $config = array
 	(
 		'drivers' => array('group' => array('AuthOrm')),
@@ -22,8 +24,9 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	public function perform_check()
 	{
 		$userModel = \Config::get('authorm.model.user');
+		$user = $this->user;
 		
-		if(\Session::get('user') instanceof $userModel)
+		if($user instanceof $userModel)
 		{
 			return true;
 		}
@@ -66,6 +69,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 		{
 			// store to session
 			\Session::set('user', $userObj);
+			$this->user = $userObj;
 			
 			return true;
 		}
@@ -78,6 +82,13 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	 */
 	public function logout()
 	{
+		// you have to unregister the verified
+		// diver by hand, otherwise you won't be able
+		// to logout properly!
+		\Auth::_unregister_verified($this);
+		
+		// resetting user
+		$this->user = null;
 		\Session::delete('user');
 		
 		return true;
@@ -93,10 +104,9 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	{
 		if($this->perform_check())
 		{
-			$user = \Session::get('user');
 			$id = \Config::get('authorm.fields.user.id');
 			
-			return array($this->id, $user->{$id});
+			return array($this->id, $this->user->{$id});
 		}
 		
 		return false;
@@ -112,7 +122,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	{
 		if($this->perform_check())
 		{
-			$user = \Session::get('user');
+			$user = $this->user;
 			
 			$group_key = \Config::get('authorm.fields.user.groups');
 			$group_id = \Config::get('authorm.fields.group.id');
@@ -146,10 +156,9 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	{
 		if($this->perform_check())
 		{
-			$user = \Session::get('user');
 			$mail = \Config::get('authorm.fields.user.email');
 			
-			return $user->{$mail};
+			return $this->user->{$mail};
 						
 		}
 		
@@ -165,14 +174,13 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	{
 		if($this->perform_check())
 		{
-			$user = \Session::get('user');
 			$fields = \Config::get('authorm.fields.user.screenname');
 			
 			$name = '';
 			
 			foreach($fields as $field)
 			{
-				$name .= $user->{$field} . ' ';
+				$name .= $this->user->{$field} . ' ';
 			}
 			
 			return trim($name);
