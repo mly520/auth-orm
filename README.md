@@ -14,14 +14,14 @@ which uses the Orm-Package as a persistance layer. It is written as a package to
 * Michael Kreis	[@m-kay](https://github.com/m-kay)
 
 ## Installation
-1. Clone Auth-Orm into your package path.
+Clone Auth-Orm into your package path.
 
     git clone git@github.com:anteater/auth-orm.git
 
-1. Set up Fuel to use Auth-Orm.
+Set up Fuel to use Auth-Orm.
 
-1. Set up your models.
+Set up your models.
 
-1. Create a configuration file in your app path and update some values if you need.
+Create a configuration file in your app path and update some values if you need.
 
-1. Party!
+Party!
