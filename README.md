@@ -39,7 +39,7 @@ Set up Fuel to load the required packages by activating them in your app path lo
     	'auth-orm'
     ),
 
-Set up your models, but be aware: As models are not that flexible to handle like - lets say - simple databases: here are the limitations: You need six different tables and three different models if you plan to implement the whole story, including users, groups and ACL handling. A sample of a database installation script and the relating models can be found in the help folder in the root path of the package.
+Set up your models, but be aware: As models are not that flexible to handle like - lets say - simple databases: here are the limitations: You need six different tables and three different models if you plan to implement the whole story, including users, groups and ACL handling. A sample of a database installation script and the relating models can be found in the help folder in the root path of the package. All the field names of the models (like say: username or group_id) can be customized in the authorm-config.
 
 Create a configuration file in your app path and update some values if you need. (Or copy the one from the package path)
 
@@ -60,3 +60,9 @@ Party!
 	}
 	
 	$auth->logout();
+
+## Help or Fail!
+Write an issue in our [Bugtracker](https://github.com/anteater/auth-orm/issues), drop us a message or ask on [Twitter](https://twitter.com/anteaterBT).
+
+## Thanks!
+No worries. 
