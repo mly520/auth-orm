@@ -7,7 +7,7 @@ which uses the Orm-Package as a persistance layer.
 * [Auth](https://github.com/fuel/auth)
 * [Orm](https://github.com/fuel/orm)
 
-#Team
+##Team
 
 * Jim Schmid [<sheeep>](https://github.com/sheeep)
 * Michael Kreis [<m-kay>](https://github.com/m-kay)
