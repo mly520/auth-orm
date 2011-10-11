@@ -15,6 +15,7 @@ return array
 		(
 			'screenname'	=> array('name'),
 			'username'		=> array('username'),
+			'permissions'	=> 'permissions',
 			'password'		=> 'password',
 			'groups'		=> 'groups',
 			'email'			=> 'email',
@@ -23,15 +24,17 @@ return array
 		
 		'group'	=> array
 		(
-			'id'		=> 'id',
-			'users'		=> 'users',
-			'name'		=> 'name'
+			'id'			=> 'id',
+			'users'			=> 'users',
+			'name'			=> 'name',
+			'permissions'	=> 'permissions'
 		),
 		
 		'permission' => array
 		(
 			'area'		=> 'area',
 			'right'		=> 'right',
+			'granted'	=> 'granted'
 		)
 	)
 );
