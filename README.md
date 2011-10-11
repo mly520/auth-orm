@@ -9,7 +9,7 @@
 Auth-Orm is a package for the FuelPHP-Framework. Basically it's just an auth-driver
 which uses the Orm-Package as a persistance layer. It is written as a package to be completely update-save.
 
-##Team
+##Devs
 * Jim Schmid [@sheeep](https://github.com/sheeep)
 * Michael Kreis	[@m-kay](https://github.com/m-kay)
 
@@ -20,8 +20,43 @@ Clone Auth-Orm into your package path.
 
 Set up Fuel to use Auth-Orm.
 
-Set up your models.
+    cp fuel/packages/auth-orm/config/auth.php fuel/app/config/auth.php
 
-Create a configuration file in your app path and update some values if you need.
+Now edit the configuration file in your app path by adding a salt, like:
+
+    <?php
+
+    return array(
+	    'driver'	=> 'AuthOrm',
+	    'salt'		=> 'Nope! Just Chuck Testa!',
+    );
+
+Set up Fuel to load the required packages by activating them in your app path located config. (file: config.php)
+
+    'packages' => array(
+    	'auth',
+    	'orm',
+    	'auth-orm'
+    ),
+
+Set up your models, but be aware: As models are not that flexible to handle like - lets say - simple databases: here are the limitations: You need six different tables and three different models if you plan to implement the whole story, including users, groups and ACL handling. A sample of a database installation script and the relating models can be found in the help folder in the root path of the package.
+
+Create a configuration file in your app path and update some values if you need. (Or copy the one from the package path)
+
+    cp fuel/packages/auth-orm/config/authorm.php fuel/app/config/authorm.php
 
 Party!
+
+	$auth = Auth::instance();
+	
+	if(!$auth->login('test', 'tester'))
+	{
+		Response::redirect('login');
+	}
+	
+	if($auth->has_access('welcome.read'))
+	{
+		// congratulation, you have access!
+	}
+	
+	$auth->logout();
