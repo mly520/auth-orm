@@ -111,6 +111,16 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 		
 		return false;
 	}
+	
+	public function get_user()
+	{
+		if($this->perform_check())
+		{
+			return $this->user;
+		}
+		
+		return null;
+	}
 
 	/**
 	 * Get User Groups of the current logged in user
