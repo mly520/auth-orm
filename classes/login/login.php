@@ -24,7 +24,9 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	public function perform_check()
 	{
 		$userModel = \Config::get('authorm.model.user');
-		$user = $this->user;
+		$user = \Session::get('user');
+		
+		$this->user = $user;
 		
 		if($user instanceof $userModel)
 		{
