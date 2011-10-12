@@ -24,7 +24,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 	public function perform_check()
 	{
 		$userModel = \Config::get('authorm.model.user');
-		$user = \Session::get('user');
+		$user = $userModel::find(\Session::get('user'))->get();
 		
 		$this->user = $user;
 		
@@ -51,6 +51,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 		
 		$userModel = \Config::get('authorm.model.user');
 		
+		$userFieldId   = \Config::get('authorm.fields.user.id');
 		$userFieldUser = \Config::get('authorm.fields.user.username');
 		$userFieldPass = \Config::get('authorm.fields.user.password');
 		
@@ -70,7 +71,7 @@ class Auth_Login_AuthOrm extends \Auth_Login_Driver
 		if($userObj instanceof $userModel)
 		{
 			// store to session
-			\Session::set('user', $userObj);
+			\Session::set('user', $userObj->{$userFieldId});
 			$this->user = $userObj;
 			
 			return true;
