@@ -18,7 +18,7 @@ Clone Auth-Orm into your package path.
 
     git clone git@github.com:anteater/auth-orm.git
 
-Set up Fuel to use Auth-Orm.
+Setup Fuel to use Auth-Orm.
 
     cp fuel/packages/auth-orm/config/auth.php fuel/app/config/auth.php
 
@@ -31,7 +31,7 @@ Now edit the configuration file in your app path by adding a salt, like:
 	    'salt'		=> 'Nope! Just Chuck Testa!',
     );
 
-Set up Fuel to load the required packages by activating them in your app path located config. (file: config.php)
+Setup Fuel to load the required packages by activating them in your app path located config. (file: config.php)
 
     'packages' => array(
     	'auth',
@@ -39,7 +39,7 @@ Set up Fuel to load the required packages by activating them in your app path lo
     	'auth-orm'
     ),
 
-Set up your models, but be aware: As models are not that flexible to handle like - lets say - simple databases: here are the limitations: You need six different tables and three different models if you plan to implement the whole story, including users, groups and ACL handling. A sample of a database installation script and the relating models can be found in the help folder in the root path of the package. All the field names of the models (like say: username or group_id) can be customized in the authorm-config.
+Setup your models, but be aware: As models are not that flexible to handle like - lets say - simple databases: here are the limitations: You need six different tables and three different models if you plan to implement the whole story, including users, groups and ACL handling. A sample of a database installation script and the relating models can be found in the help folder in the root path of the package. All the field names of the models (like say: username or group_id) can be customized in the authorm-config.
 
 Create a configuration file in your app path and update some values if you need. (Or copy the one from the package path)
 
