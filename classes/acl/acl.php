@@ -44,40 +44,47 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 			
 			// group permissions
 			foreach($groups as $group)
-			{
-				
-				$group::query()->related($groupPermissionField, array
+			{	
+				$prm = $group::query()->related($groupPermissionField, array
 				(
 					'where' => array(
 						array($permissionArea, $area),
-						array($permissionRight, $right)
+						array($permissionRight, $right),
+						array($permissionGrantedField, true)
 					),
 					'sort_by' => array($groupPermissionField . '.' . $permissionGrantedField, 'desc'),
 				))->get_one();
 				
 				$permissions = $group->{$groupPermissionField};
 				
-				if(count($permissions) >= 1)
+				if(!is_null($prm) && count($permissions) >= 1)
 				{
 					$groupGranted = $groupGranted || (reset($permissions)->{$permissionGrantedField} === false ? false : true);
 				}
 			}
 			
 			// user permissions
-			$user::query()->related($userPermissionField, array
+			$prm = $user::query()->related($userPermissionField, array
 			(
 				'where' => array(
 					array($permissionArea, $area),
-					array($permissionRight, $right)
+					array($permissionRight, $right),
+					array($permissionGrantedField, true)
 				),
 				'sort_by' => array($userPermissionField . '.' . $permissionGrantedField, 'desc'),
 			))->get_one();
 			
 			$permissions = $user->{$userPermissionField};
-			
-			if(count($permissions) >= 1)
+						
+			if(!is_null($prm) && count($permissions) >= 1)
 			{
 				$userGranted = $userGranted || ((bool)reset($permissions)->{$permissionGrantedField} === false ? false : true);
+			}
+			elseif($groupGranted)
+			{
+				// because the group has the permission, but it can't be found
+				// in the userrights -> the user has groupaccess.
+				$userGranted = true;
 			}
 			
 			$rightGranted = $userGranted || ($userGranted && $groupGranted);
