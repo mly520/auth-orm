@@ -42,43 +42,66 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 			$groupGranted = false;
 			$userGranted  = false;
 			
+			// some shortcuts
+			$gpf = $groupPermissionField;
+			$upf = $userPermissionField;
+			$pfa = $permissionArea;
+			$pfr = $permissionRight;
+			$pgf = $permissionGrantedField;
+			
+			// chained shortcuts
+			$cfa = sprintf("%s.%s", $gpf, $pfa);
+			$cfr = sprintf("%s.%s", $gpf, $pfr);
+			$cfg = sprintf("%s.%s", $gpf, $pgf);
+			
 			// group permissions
 			foreach($groups as $group)
-			{	
-				$prm = $group::query()->related($groupPermissionField, array
-				(
-					'where' => array(
-						array($permissionArea, $area),
-						array($permissionRight, $right),
-						array($permissionGrantedField, true)
-					),
-					'sort_by' => array($groupPermissionField . '.' . $permissionGrantedField, 'desc'),
-				))->get_one();
+			{				
+				$prm =	$group::query()->related($gpf)
+						
+						// conditions
+						->where($cfa, $area)
+						->where($cfr, $right)
+						->where($cfg, true)
+						
+						// sorting
+						->order_by($cfg, 'desc')
+						
+						// fetch
+						->get_one();
 				
-				$permissions = $group->{$groupPermissionField};
+				$permissions = $group->{$gpf};
 				
 				if(!is_null($prm) && count($permissions) >= 1)
 				{
-					$groupGranted = $groupGranted || (reset($permissions)->{$permissionGrantedField} === false ? false : true);
+					$groupGranted = $groupGranted || (reset($permissions)->{$pgf} === false ? false : true);
 				}
 			}
 			
-			// user permissions
-			$prm = $user::query()->related($userPermissionField, array
-			(
-				'where' => array(
-					array($permissionArea, $area),
-					array($permissionRight, $right),
-					array($permissionGrantedField, true)
-				),
-				'sort_by' => array($userPermissionField . '.' . $permissionGrantedField, 'desc'),
-			))->get_one();
+			// overwrite chained shortcuts
+			$cfa = sprintf("%s.%s", $upf, $pfa);
+			$cfr = sprintf("%s.%s", $upf, $pfr);
+			$cfg = sprintf("%s.%s", $upf, $pgf);
 			
-			$permissions = $user->{$userPermissionField};
+			// user permissions
+			$prm =	$user::query()->related($upf)
+			
+				// conditions
+				->where($cfa, $area)
+				->where($cfr, $right)
+				->where($cfg, true)
+				
+				// sorting
+				->order_by($cfg, 'desc')
+				
+				// fetch
+				->get_one();
+			
+			$permissions = $user->{$upf};
 						
 			if(!is_null($prm) && count($permissions) >= 1)
 			{
-				$userGranted = $userGranted || ((bool)reset($permissions)->{$permissionGrantedField} === false ? false : true);
+				$userGranted = $userGranted || ((bool)reset($permissions)->{$pgf} === false ? false : true);
 			}
 			elseif($groupGranted)
 			{
