@@ -76,6 +76,8 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 				{
 					$groupGranted = $groupGranted || (reset($permissions)->{$pgf} === false ? false : true);
 				}
+				
+				$group::query()->related($gpf, array())->get();
 			}
 			
 			// overwrite chained shortcuts
@@ -109,6 +111,8 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 				// in the userrights -> the user has groupaccess.
 				$userGranted = true;
 			}
+			
+			$user::query()->related($upf, array())->get();
 			
 			$rightGranted = $userGranted || ($userGranted && $groupGranted);
 			
