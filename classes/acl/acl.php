@@ -56,21 +56,24 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 			
 			// group permissions
 			foreach($groups as $group)
-			{				
-				$prm =	$group::query()->related($gpf)
+			{
+				$pks = $group::primary_key();
+				$prm = $group::query()->where(reset($pks), $group->id)
+				
+						->related($gpf)
+						
+						// sorting
+						->order_by($cfg, 'desc')
 						
 						// conditions
 						->where($cfa, $area)
 						->where($cfr, $right)
 						->where($cfg, true)
 						
-						// sorting
-						->order_by($cfg, 'desc')
-						
 						// fetch
 						->get_one();
 				
-				$permissions = $group->{$gpf};
+				$permissions = isset($prm->{$gpf}) ? $prm->{$gpf} : null;
 				
 				if(!is_null($prm) && count($permissions) >= 1)
 				{
@@ -85,8 +88,12 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 			$cfr = sprintf("%s.%s", $upf, $pfr);
 			$cfg = sprintf("%s.%s", $upf, $pgf);
 			
+			$upk = $user::primary_key();
+			
 			// user permissions
-			$prm =	$user::query()->related($upf)
+			$prm = $user::query()->where(reset($upk), $user->id)
+			
+				->related($upf)
 			
 				// conditions
 				->where($cfa, $area)
@@ -99,7 +106,7 @@ class Auth_Acl_AuthOrm extends \Auth_Acl_Driver
 				// fetch
 				->get_one();
 			
-			$permissions = $user->{$upf};
+			$permissions = isset($prm->{$upf}) ? $prm->{$upf} : null;
 						
 			if(!is_null($prm) && count($permissions) >= 1)
 			{
